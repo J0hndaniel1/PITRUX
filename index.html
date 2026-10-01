@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#02040b">
+
+    <title>PITRUX — Explorador Espacial</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Import Map: onde encontrar o Three.js e os seus módulos extra -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- ============ TELA DE CARREGAMENTO ============ -->
+    <div id="loading">
+        <div class="loader">
+            <div class="loader-orbit"><div class="loader-dot"></div></div>
+            <h1>PITRUX</h1>
+            <p>A GERAR O SISTEMA SOLAR…</p>
+        </div>
+    </div>
+
+
+    <main id="app">
+
+        <!-- SISTEMA SOLAR 3D -->
+        <div id="space"></div>
+
+        <!-- Rótulos flutuantes dos astros -->
+        <div id="labels"></div>
+
+        <!-- Efeitos de ecrã -->
+        <div class="fx-vignette"></div>
+        <div class="fx-scanlines"></div>
+
+
+        <!-- ============ TOPO ============ -->
+        <header class="topbar">
+
+            <div class="brand hud">
+                <div class="brand-logo">PX</div>
+                <div class="brand-text">
+                    <h1>PITRUX</h1>
+                    <span>EXPLORAÇÃO ESPACIAL</span>
+                </div>
+            </div>
+
+            <div class="top-buttons">
+                <button id="overviewBtn">VISÃO GERAL</button>
+                <button id="exploreBtn" class="active">EXPLORAR</button>
+            </div>
+
+        </header>
+
+
+        <!-- ============ LISTA DE PLANETAS ============ -->
+        <aside class="planet-menu hud">
+            <div class="menu-title">SISTEMA SOLAR</div>
+            <div id="planetList"></div>
+        </aside>
+
+
+        <!-- ============ PAINEL DE INFORMAÇÕES ============ -->
+        <aside class="info-panel hud">
+
+            <div class="info-top">
+                <div>
+                    <span class="small-title">ASTRO SELECIONADO</span>
+                    <h2 id="planetName">Terra</h2>
+                    <p id="planetType">Planeta rochoso</p>
+                </div>
+                <button id="closeInfo" class="close-button" aria-label="Fechar">×</button>
+            </div>
+
+            <div id="planetTag" class="planet-tag">TERR-03</div>
+
+            <p id="planetDescription" class="description"></p>
+
+            <div id="facts" class="facts"></div>
+
+            <div class="curiosity">
+                <span>✦ CURIOSIDADE</span>
+                <p id="curiosity"></p>
+            </div>
+
+            <button id="focusBtn" class="main-button">EXPLORAR ESTE ASTRO</button>
+
+        </aside>
+
+
+        <!-- ============ MODO EXPLORAÇÃO ============ -->
+        <section id="exploreOverlay" class="explore-overlay hidden">
+
+            <div class="explore-card hud">
+
+                <div class="explore-header">
+                    <div>
+                        <span class="small-title">MODO DE EXPLORAÇÃO</span>
+                        <h2 id="exploreName">Terra</h2>
+                    </div>
+                    <button id="exitExplore">SAIR ×</button>
+                </div>
+
+                <div class="explore-body">
+
+                    <div id="planetSymbol" class="planet-symbol"></div>
+
+                    <div class="explore-information">
+                        <p id="exploreText"></p>
+
+                        <div class="explore-stats">
+                            <div><small>DISTÂNCIA</small><strong id="exploreDistance"></strong></div>
+                            <div><small>ANO</small><strong id="exploreYear"></strong></div>
+                            <div><small>LUAS</small><strong id="exploreMoons"></strong></div>
+                            <div><small>TIPO</small><strong id="exploreType"></strong></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mission">
+                    <span>REGISTO PITRUX</span>
+                    <p id="missionText"></p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============ CONTROLOS ============ -->
+        <div class="controls hud">
+
+            <button id="pauseBtn">Ⅱ PAUSAR</button>
+
+            <label>
+                VELOCIDADE
+                <input id="speed" type="range" min="0" max="3" step="0.1" value="1">
+                <em id="speedValue">1.0×</em>
+            </label>
+
+            <button id="orbitsBtn" class="toggle active" title="Mostrar/ocultar órbitas">ÓRBITAS</button>
+            <button id="labelsBtn" class="toggle active" title="Mostrar/ocultar nomes">NOMES</button>
+
+            <!-- Só aparece se existir música definida no config.js -->
+            <button id="musicBtn" class="toggle" hidden>♪ MÚSICA</button>
+
+            <button id="resetBtn">⌂ SISTEMA</button>
+
+        </div>
+
+
+        <!-- ============ AJUDA ============ -->
+        <div class="help">
+            <b>ARRASTA</b> para rodar · <b>SCROLL</b> para aproximar · <b>CLICA</b> num astro
+        </div>
+
+
+        <!-- ============ ASTRONAUTA ============ -->
+        <div id="astro" class="astro-wrap" data-mood="idle">
+
+            <div id="astroBubble" class="astro-bubble">
+                <b id="astroName">NOVA</b>
+                <span id="astroText"></span>
+            </div>
+
+            <div id="astroFigure" class="astro-figure" title="Faz-me festas!">
+                <svg class="astro-svg" viewBox="0 0 140 175" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="gSuit" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="#ffffff"/>
+                            <stop offset="1" stop-color="#aebad6"/>
+                        </linearGradient>
+                        <radialGradient id="gHelmet" cx=".35" cy=".3" r=".95">
+                            <stop offset="0" stop-color="#ffffff"/>
+                            <stop offset=".65" stop-color="#d8dff0"/>
+                            <stop offset="1" stop-color="#93a1c4"/>
+                        </radialGradient>
+                        <linearGradient id="gVisor" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#22397f"/>
+                            <stop offset="1" stop-color="#050a1e"/>
+                        </linearGradient>
+                        <linearGradient id="gAccent" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0" stop-color="#70dcff"/>
+                            <stop offset="1" stop-color="#9c7cff"/>
+                        </linearGradient>
+                    </defs>
+
+                    <ellipse class="astro-shadow" cx="70" cy="169" rx="30" ry="4"/>
+
+                    <g class="astro-body">
+
+                        <!-- mochila -->
+                        <rect x="32" y="82" width="76" height="54" rx="15" fill="#7f8cae"/>
+                        <rect x="38" y="90" width="8" height="30" rx="4" fill="url(#gAccent)" opacity=".8"/>
+                        <rect x="94" y="90" width="8" height="30" rx="4" fill="url(#gAccent)" opacity=".8"/>
+
+                        <!-- pernas -->
+                        <g class="leg leg-l">
+                            <rect x="52" y="126" width="15" height="34" rx="7" fill="url(#gSuit)"/>
+                            <rect x="49" y="152" width="21" height="12" rx="6" fill="#2c3856"/>
+                        </g>
+                        <g class="leg leg-r">
+                            <rect x="73" y="126" width="15" height="34" rx="7" fill="url(#gSuit)"/>
+                            <rect x="70" y="152" width="21" height="12" rx="6" fill="#2c3856"/>
+                        </g>
+
+                        <!-- tronco -->
+                        <rect x="46" y="78" width="48" height="54" rx="18" fill="url(#gSuit)"/>
+                        <rect x="57" y="93" width="26" height="17" rx="5" fill="#101a38" stroke="#70dcff" stroke-opacity=".5"/>
+                        <circle class="led led1" cx="63" cy="101.5" r="2.4" fill="#70dcff"/>
+                        <circle class="led led2" cx="70" cy="101.5" r="2.4" fill="#9c7cff"/>
+                        <circle class="led led3" cx="77" cy="101.5" r="2.4" fill="#ff6b8b"/>
+
+                        <!-- braços -->
+                        <g class="arm arm-l">
+                            <rect x="38" y="82" width="14" height="36" rx="7" fill="url(#gSuit)"/>
+                            <circle cx="45" cy="121" r="8" fill="#2c3856"/>
+                        </g>
+                        <g class="arm arm-r">
+                            <rect x="88" y="82" width="14" height="36" rx="7" fill="url(#gSuit)"/>
+                            <circle cx="95" cy="121" r="8" fill="#2c3856"/>
+                        </g>
+
+                        <!-- capacete -->
+                        <line x1="70" y1="10" x2="70" y2="2" stroke="#93a1c4" stroke-width="2.5" stroke-linecap="round"/>
+                        <circle class="antenna" cx="70" cy="2.5" r="3.4" fill="#70dcff"/>
+                        <circle cx="29" cy="52" r="7" fill="#7f8cae"/>
+                        <circle cx="111" cy="52" r="7" fill="#7f8cae"/>
+                        <circle cx="70" cy="50" r="40" fill="url(#gHelmet)"/>
+                        <ellipse cx="70" cy="52" rx="32" ry="27" fill="url(#gVisor)" stroke="#70dcff" stroke-opacity=".45" stroke-width="1.5"/>
+
+                        <!-- olhos -->
+                        <g id="eyeTrack" class="eye-track">
+                            <g class="eyes eye-open">
+                                <ellipse cx="59" cy="50" rx="5" ry="7" fill="#7df9ff"/>
+                                <ellipse cx="81" cy="50" rx="5" ry="7" fill="#7df9ff"/>
+                                <circle cx="60.5" cy="47.5" r="1.7" fill="#fff"/>
+                                <circle cx="82.5" cy="47.5" r="1.7" fill="#fff"/>
+                            </g>
+                            <g class="eye-happy" fill="none" stroke="#7df9ff" stroke-width="3.2" stroke-linecap="round">
+                                <path d="M53 53 Q59 44 65 53"/>
+                                <path d="M75 53 Q81 44 87 53"/>
+                            </g>
+                            <g class="eye-closed" fill="none" stroke="#7df9ff" stroke-width="3" stroke-linecap="round">
+                                <path d="M53 52 H65"/>
+                                <path d="M75 52 H87"/>
+                            </g>
+                        </g>
+
+                        <!-- boca -->
+                        <path class="m-smile" d="M62 65 Q70 72 78 65" fill="none" stroke="#7df9ff" stroke-width="2.6" stroke-linecap="round"/>
+                        <ellipse class="m-open" cx="70" cy="67" rx="5.5" ry="6" fill="#050a1e" stroke="#7df9ff" stroke-width="2"/>
+                        <ellipse class="m-wow" cx="70" cy="68" rx="4.5" ry="7" fill="#050a1e" stroke="#7df9ff" stroke-width="2"/>
+                        <path class="m-flat" d="M64 67 H76" fill="none" stroke="#7df9ff" stroke-width="2.6" stroke-linecap="round"/>
+                        <path class="m-shiver" d="M60 67 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l3 3 l3 -3" fill="none" stroke="#7df9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+                        <!-- reflexo e tinta do visor -->
+                        <ellipse class="visor-tint" cx="70" cy="52" rx="32" ry="27"/>
+                        <path d="M46 40 Q52 28 66 26" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="3" stroke-linecap="round"/>
+
+                        <!-- efeitos -->
+                        <g class="fx fx-sweat" fill="#8fe3ff">
+                            <path class="drop d1" d="M36 30 q-4 7 0 9 q4 -2 0 -9z"/>
+                            <path class="drop d2" d="M104 34 q-4 7 0 9 q4 -2 0 -9z"/>
+                        </g>
+                        <g class="fx fx-snow" fill="#cfeeff" font-size="15">
+                            <text x="100" y="20">❄</text>
+                            <text x="26" y="26" font-size="11">❄</text>
+                        </g>
+                        <g class="fx fx-zzz" fill="#cfd8ff" font-weight="700" font-family="Orbitron, Arial">
+                            <text class="z1" x="102" y="24" font-size="13">Z</text>
+                            <text class="z2" x="112" y="12" font-size="10">z</text>
+                        </g>
+                        <g class="fx fx-spark" fill="#ffe27a">
+                            <text class="s1" x="12" y="28" font-size="14">✦</text>
+                            <text class="s2" x="118" y="22" font-size="11">✦</text>
+                            <text class="s3" x="110" y="60" font-size="9">✦</text>
+                        </g>
+                        <g class="fx fx-note" fill="#70dcff" font-size="17">
+                            <text class="n1" x="12" y="30">♪</text>
+                            <text class="n2" x="116" y="24">♫</text>
+                        </g>
+                        <g class="fx fx-wow" fill="#ff6b8b" font-size="22" font-weight="900" font-family="Orbitron, Arial">
+                            <text x="108" y="22">!</text>
+                        </g>
+
+                    </g>
+                </svg>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>
