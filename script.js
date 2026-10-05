@@ -16,72 +16,72 @@ const planets = {
 
     Sol: {
         type: "Estrela", tag: "STAR-00", color: 0xffc857, radius: 4.7, distance: 0, orbitSpeed: 0,
-        description: "O Sol é a estrela no centro do Sistema Solar. A sua enorme gravidade mantém os planetas e muitos outros corpos em órbita.",
-        facts: { "Temperatura": "≈ 5.500 °C", "Diâmetro": "≈ 1,39 milhões km", "Idade": "≈ 4,6 mil milhões anos", "Composição": "Hidrogénio + hélio" },
+        description: "O Sol é uma estrela anã amarela no centro do Sistema Solar. A sua gravidade mantém os planetas, planetas anões, asteroides e cometas nas respetivas órbitas. No núcleo, a fusão nuclear transforma hidrogénio em hélio e liberta a energia que ilumina e aquece os mundos à sua volta.",
+        facts: { "Temperatura à superfície": "≈ 5.500 °C", "Diâmetro": "≈ 1,39 milhões km", "Idade": "≈ 4,6 mil milhões anos", "Composição": "Hidrogénio + hélio" },
         curiosity: "A luz do Sol demora cerca de 8 minutos e 20 segundos para chegar à Terra.",
         mission: "PITRUX CLASSIFICAÇÃO: estrela central do sistema e principal fonte de luz e energia."
     },
 
     Mercúrio: {
         type: "Planeta rochoso", tag: "MERC-01", color: 0x8c8b87, radius: .75, distance: 9, orbitSpeed: .040,
-        description: "Mercúrio é o planeta mais próximo do Sol e o menor dos oito planetas. A sua superfície possui muitas crateras.",
-        facts: { "Distância": "57,9 milhões km", "Ano": "88 dias", "Dia solar": "176 dias", "Luas": "0" },
+        description: "Mercúrio é o planeta mais pequeno e mais próximo do Sol. A superfície antiga e rochosa está marcada por crateras de impacto, escarpas e grandes bacias. Quase não tem atmosfera para reter calor, por isso as temperaturas variam drasticamente entre o dia e a noite.",
+        facts: { "Distância": "57,9 milhões km", "Ano": "88 dias", "Dia solar": "176 dias", "Temperatura": "−180 a 430 °C", "Luas": "0" },
         curiosity: "Mercúrio não é o planeta mais quente. Esse recorde pertence a Vénus.",
         mission: "PITRUX MISSÃO M-01: estudar a superfície rochosa e o ambiente extremo próximo do Sol."
     },
 
     Vénus: {
         type: "Planeta rochoso", tag: "VENU-02", color: 0xd9a85b, radius: 1.15, distance: 13, orbitSpeed: .030,
-        description: "Vénus possui uma atmosfera muito espessa, rica em dióxido de carbono, que produz um efeito de estufa extremo.",
-        facts: { "Distância": "108,2 milhões km", "Ano": "224,7 dias", "Temperatura": "≈ 465 °C", "Luas": "0" },
+        description: "Vénus é um mundo rochoso envolto por nuvens densas de ácido sulfúrico. A sua atmosfera, composta sobretudo por dióxido de carbono, cria um efeito de estufa intenso e uma pressão à superfície esmagadora. Roda lentamente no sentido retrógrado, ao contrário da maioria dos planetas.",
+        facts: { "Distância": "108,2 milhões km", "Ano": "224,7 dias", "Temperatura": "≈ 465 °C", "Pressão": "≈ 92 vezes a da Terra", "Luas": "0" },
         curiosity: "Vénus roda no sentido contrário ao da maioria dos planetas.",
         mission: "PITRUX MISSÃO V-02: analisar a atmosfera densa e as condições extremas do planeta."
     },
 
     Terra: {
         type: "Planeta rochoso", tag: "TERR-03", color: 0x3975c7, radius: 1.25, distance: 17, orbitSpeed: .024,
-        description: "A Terra é o terceiro planeta a partir do Sol e o único mundo conhecido que possui vida. Tem água líquida abundante à superfície.",
-        facts: { "Distância": "149,6 milhões km", "Ano": "365,25 dias", "Diâmetro": "12.742 km", "Luas": "1" },
+        description: "A Terra é o terceiro planeta a partir do Sol e o único mundo conhecido que alberga vida. A água líquida cobre cerca de 71% da superfície; uma atmosfera rica em azoto e oxigénio e um campo magnético ajudam a proteger os ecossistemas. Continentes, oceanos e nuvens estão em constante transformação.",
+        facts: { "Distância": "149,6 milhões km", "Ano": "365,25 dias", "Diâmetro": "12.742 km", "Atmosfera": "Azoto + oxigénio", "Luas": "1" },
         curiosity: "Cerca de 71% da superfície terrestre é coberta por água.",
         mission: "PITRUX BASE T-03: planeta de referência para comparação das condições dos restantes mundos."
     },
 
     Marte: {
         type: "Planeta rochoso", tag: "MARS-04", color: 0xc65d42, radius: .95, distance: 22, orbitSpeed: .020,
-        description: "Marte é conhecido como o Planeta Vermelho por causa dos minerais ricos em ferro presentes no seu solo.",
-        facts: { "Distância": "227,9 milhões km", "Ano": "687 dias", "Dia": "24h 37min", "Luas": "2" },
+        description: "Marte é conhecido como o Planeta Vermelho devido aos óxidos de ferro no seu solo. Tem vulcões gigantes, vales profundos, calotes polares e tempestades de poeira que podem cobrir o planeta. A atmosfera é fina e fria; sondas procuram vestígios da água líquida que existiu no passado.",
+        facts: { "Distância": "227,9 milhões km", "Ano": "687 dias", "Dia": "24h 37min", "Atmosfera": "Dióxido de carbono", "Luas": "2" },
         curiosity: "Marte possui o Olympus Mons, o maior vulcão conhecido do Sistema Solar.",
         mission: "PITRUX MISSÃO M-04: estudar a história geológica e a possibilidade de ambientes habitáveis."
     },
 
     Júpiter: {
         type: "Gigante gasoso", tag: "JUPI-05", color: 0xc49a70, radius: 3.15, distance: 31, orbitSpeed: .011,
-        description: "Júpiter é o maior planeta do Sistema Solar. É composto principalmente por hidrogénio e hélio.",
-        facts: { "Distância": "778,5 milhões km", "Ano": "11,86 anos", "Diâmetro": "≈ 139.820 km", "Luas": "95+ conhecidas" },
+        description: "Júpiter é o maior planeta do Sistema Solar: um gigante gasoso sem uma superfície sólida definida, composto principalmente por hidrogénio e hélio. Bandas de nuvens coloridas circundam o planeta e a Grande Mancha Vermelha é uma tempestade persistente. O seu intenso campo magnético envolve dezenas de luas conhecidas.",
+        facts: { "Distância": "778,5 milhões km", "Ano": "11,86 anos", "Diâmetro": "≈ 139.820 km", "Rotação": "≈ 9h 56min", "Luas": "95+ conhecidas" },
         curiosity: "A Grande Mancha Vermelha é uma enorme tempestade que existe há séculos.",
         mission: "PITRUX MISSÃO J-05: observar tempestades, campo magnético e sistema de luas."
     },
 
     Saturno: {
         type: "Gigante gasoso", tag: "SATU-06", color: 0xd1b77d, radius: 2.65, distance: 41, orbitSpeed: .008,
-        description: "Saturno é famoso pelo seu extraordinário sistema de anéis, formado principalmente por partículas de gelo e rocha.",
-        facts: { "Distância": "1,43 mil milhões km", "Ano": "29,45 anos", "Diâmetro": "≈ 116.460 km", "Luas": "140+ conhecidas" },
+        description: "Saturno é um gigante gasoso reconhecido pelo vasto sistema de anéis, composto por incontáveis fragmentos de gelo e rocha. Os anéis são muito largos, mas surpreendentemente finos. A atmosfera apresenta faixas de nuvens e ventos velozes; a lua Titã tem lagos e rios de hidrocarbonetos líquidos.",
+        facts: { "Distância": "1,43 mil milhões km", "Ano": "29,45 anos", "Diâmetro": "≈ 116.460 km", "Anéis": "Gelo e rocha", "Luas": "140+ conhecidas" },
         curiosity: "Saturno tem uma densidade média inferior à da água.",
         mission: "PITRUX MISSÃO S-06: estudar os anéis e as numerosas luas do gigante gasoso."
     },
 
     Urano: {
         type: "Gigante de gelo", tag: "URAN-07", color: 0x73c6cf, radius: 1.95, distance: 51, orbitSpeed: .006,
-        description: "Urano possui uma tonalidade azul-esverdeada devido ao metano na atmosfera e gira quase de lado.",
-        facts: { "Distância": "2,87 mil milhões km", "Ano": "84 anos", "Temperatura": "≈ −224 °C", "Luas": "27 conhecidas" },
+        description: "Urano é um gigante de gelo cuja atmosfera de hidrogénio, hélio e metano lhe dá a cor azul-esverdeada. O eixo de rotação está inclinado cerca de 98 graus, pelo que o planeta parece rolar de lado ao longo da órbita. No interior, materiais como água, amónia e metano encontram-se sob pressão extrema.",
+        facts: { "Distância": "2,87 mil milhões km", "Ano": "84 anos", "Temperatura": "≈ −224 °C", "Inclinação": "≈ 98°", "Luas": "27 conhecidas" },
         curiosity: "O eixo de Urano está inclinado cerca de 98°, fazendo o planeta parecer rolar pela órbita.",
         mission: "PITRUX MISSÃO U-07: estudar a atmosfera e a rotação extremamente inclinada."
     },
 
     Neptuno: {
         type: "Gigante de gelo", tag: "NEPT-08", color: 0x4569d2, radius: 1.9, distance: 61, orbitSpeed: .005,
-        description: "Neptuno é o planeta mais distante do Sol. É extremamente frio e possui ventos muito rápidos.",
-        facts: { "Distância": "4,50 mil milhões km", "Ano": "164,8 anos", "Ventos": "Até ~2.000 km/h", "Luas": "14 conhecidas" },
+        description: "Neptuno é o planeta mais distante do Sol e um gigante de gelo de cor azul intensa. A atmosfera contém hidrogénio, hélio e metano e é agitada por ventos que estão entre os mais rápidos do Sistema Solar. A luz solar é cerca de mil vezes mais fraca do que na Terra.",
+        facts: { "Distância": "4,50 mil milhões km", "Ano": "164,8 anos", "Ventos": "Até ~2.000 km/h", "Rotação": "≈ 16 horas", "Luas": "14 conhecidas" },
         curiosity: "Neptuno possui alguns dos ventos mais rápidos conhecidos no Sistema Solar.",
         mission: "PITRUX MISSÃO N-08: investigar a atmosfera e a dinâmica dos ventos do planeta mais distante."
     }
@@ -271,28 +271,33 @@ const painters = {
     rocky: (s, tint) => (x, y, z) => {
         const n = fbm(x * 2.4, y * 2.4, z * 2.4, s, 6);
         const r = Math.abs(fbm(x * 7, y * 7, z * 7, s + 3, 4) - .5) * 2;
-        const v = (.55 + n * .7) * (.72 + smooth(0, .35, r) * .4);
+        const grain = fbm(x * 22, y * 22, z * 22, s + 13, 3);
+        const v = (.52 + n * .72) * (.68 + smooth(0, .35, r) * .42) * (.88 + grain * .24);
         return [tint[0] * v, tint[1] * v, tint[2] * v];
     },
 
     venus: s => (x, y, z) => {
         const w = fbm(x * 1.3, y * 1.3, z * 1.3, s, 3);
-        const n = fbm(x * 2 + w * 2.5, y * 4 + w * 1.5, z * 2 + w * 2.5, s + 1, 5);
-        return ramp([[0, [185, 120, 55]], [.5, [225, 175, 100]], [1, [250, 228, 165]]], n * 1.25 - .1);
+        const n = fbm(x * 2 + w * 2.5, y * 5 + w * 1.5, z * 2 + w * 2.5, s + 1, 5);
+        const detail = fbm(x * 13 + w, y * 17, z * 13 + w, s + 12, 3);
+        const bands = Math.sin(y * 23 + w * 8 + detail * 2) * .045;
+        return ramp([[0, [160, 94, 48]], [.5, [225, 169, 93]], [1, [255, 231, 166]]], n * 1.25 + bands + detail * .16 - .1);
     },
 
     earth: s => (x, y, z) => {
         const n = fbm(x * 2.2, y * 2.2, z * 2.2, s, 6);
-        const sea = .53;
+        const detail = fbm(x * 12, y * 12, z * 12, s + 24, 4);
+        const sea = .53 + (detail - .5) * .025;
         const ay = Math.abs(y);
         let c;
 
         if (n < sea) {
-            c = ramp([[0, [6, 24, 80]], [.75, [14, 66, 150]], [1, [40, 130, 200]]], n / sea);
+            c = ramp([[0, [4, 18, 68]], [.45, [9, 48, 119]], [.8, [20, 93, 169]], [1, [75, 157, 207]]], n / sea);
         } else {
             const e = (n - sea) / (1 - sea);
             const m = fbm(x * 3.1, y * 3.1, z * 3.1, s + 40, 4);
             c = ramp([[0, [40, 125, 55]], [.35, [75, 120, 55]], [.65, [125, 105, 70]], [1, [235, 235, 240]]], e * 1.5);
+            c = mix(c, [168, 146, 103], smooth(.38, .72, detail) * .2);
             if (m < .46 && ay < .62) c = mix(c, [205, 170, 105], smooth(.46, .36, m));
         }
 
@@ -309,7 +314,8 @@ const painters = {
     mars: s => (x, y, z) => {
         const n = fbm(x * 2.5, y * 2.5, z * 2.5, s, 6);
         const dark = smooth(.5, .62, fbm(x * 1.4, y * 1.4, z * 1.4, s + 7, 3));
-        let c = ramp([[0, [95, 45, 32]], [.5, [175, 82, 52]], [1, [215, 130, 80]]], n * 1.2);
+        const grain = fbm(x * 18, y * 18, z * 18, s + 17, 3);
+        let c = ramp([[0, [82, 39, 28]], [.5, [175, 82, 52]], [1, [225, 145, 89]]], n * 1.2 + (grain - .5) * .2);
         c = mix(c, [70, 38, 30], dark * .5);
         return mix(c, [245, 245, 250], smooth(.88, .94, Math.abs(y)));
     },
@@ -317,21 +323,28 @@ const painters = {
     gas: (s, pal, freq, storm) => (x, y, z, lon, lat) => {
         const warp = fbm(x * 2, y * 6, z * 2, s, 4);
         const band = Math.sin(y * freq + warp * 3.4) * .5 + .5;
-        const fine = fbm(x * 3, y * 20, z * 3, s + 2, 3);
-        let c = ramp(pal, band * .72 + fine * .38);
+        const fine = fbm(x * 4, y * 24, z * 4, s + 2, 4);
+        const turbulence = fbm(x * 9, y * 15, z * 9, s + 27, 3);
+        let c = ramp(pal, band * .68 + fine * .34 + turbulence * .12);
 
         if (storm) {
             const dl = Math.atan2(Math.sin(lon - storm.lon), Math.cos(lon - storm.lon));
             const e = Math.pow(dl * Math.cos(lat) / .24, 2) + Math.pow((lat - storm.lat) / .085, 2);
-            if (e < 1) c = mix(c, storm.color, Math.pow(1 - e, .6) * .92);
+            if (e < 1) {
+                const eye = Math.sqrt(e);
+                const rings = .5 + .5 * Math.sin(eye * 45 + turbulence * 5);
+                c = mix(c, storm.color, Math.pow(1 - e, .55) * (.68 + rings * .24));
+                if (e < .13) c = mix(c, [235, 190, 140], (1 - e / .13) * .35);
+            }
         }
         return c;
     },
 
     ice: (s, pal) => (x, y, z) => {
         const n = fbm(x * 1.5, y * 5, z * 1.5, s, 5);
-        const b = Math.sin(y * 7 + n * 2.2) * .5 + .5;
-        return ramp(pal, .32 + b * .3 + n * .3);
+        const streaks = fbm(x * 7, y * 18, z * 7, s + 6, 4);
+        const b = Math.sin(y * 9 + n * 2.2 + streaks) * .5 + .5;
+        return ramp(pal, .27 + b * .28 + n * .28 + streaks * .16);
     }
 
 };
@@ -362,6 +375,29 @@ function toTexture(canvas) {
     t.colorSpace = THREE.SRGBColorSpace;
     t.anisotropy = maxAniso;
     return t;
+}
+
+function toBumpTexture(canvas) {
+    const bumpCanvas = document.createElement("canvas");
+    bumpCanvas.width = canvas.width;
+    bumpCanvas.height = canvas.height;
+    const ctx = bumpCanvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(canvas, 0, 0);
+    const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = image.data;
+
+    for (let i = 0; i < pixels.length; i += 4) {
+        const luminance = pixels[i] * .299 + pixels[i + 1] * .587 + pixels[i + 2] * .114;
+        pixels[i] = luminance;
+        pixels[i + 1] = luminance;
+        pixels[i + 2] = luminance;
+        pixels[i + 3] = 255;
+    }
+
+    ctx.putImageData(image, 0, 0);
+    const texture = new THREE.CanvasTexture(bumpCanvas);
+    texture.anisotropy = maxAniso;
+    return texture;
 }
 
 function radialTexture(stops) {
@@ -585,11 +621,13 @@ for (const name of planetNames) {
     const map = toTexture(canvas);
 
     const rocky = ["Mercúrio", "Marte"].includes(name);
+    const bumpMap = toBumpTexture(canvas);
     const material = new THREE.MeshStandardMaterial({
         map,
-        roughness: name === "Terra" ? .62 : .92,
-        metalness: .02,
-        ...(rocky ? { bumpMap: map, bumpScale: 1.4 } : {})
+        bumpMap,
+        bumpScale: rocky ? .16 : ["Júpiter", "Saturno", "Urano", "Neptuno"].includes(name) ? .045 : .08,
+        roughness: name === "Terra" ? .68 : .9,
+        metalness: 0
     });
 
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(data.radius, 64, 64), material);
@@ -929,6 +967,7 @@ $("resetBtn").addEventListener("click", () => {
 $("closeInfo").addEventListener("click", () => {
     touch();
     infoPanel.style.display = "none";
+    react("wave", "Painel fechado. Continuo aqui se precisares!", { force: true });
 });
 
 /* pausar */
@@ -936,6 +975,7 @@ function togglePause() {
     touch();
     paused = !paused;
     $("pauseBtn").textContent = paused ? "▶ CONTINUAR" : "Ⅱ PAUSAR";
+    $("pauseBtn").setAttribute("aria-pressed", String(paused));
     if (paused) react("wow", "Tempo parado! Está tudo congelado ❄", { force: true });
     else react("happy", "O tempo voltou a correr!", { force: true });
 }
@@ -961,6 +1001,7 @@ speedInput.addEventListener("change", () => {
 $("orbitsBtn").addEventListener("click", e => {
     touch();
     const on = e.currentTarget.classList.toggle("active");
+    e.currentTarget.setAttribute("aria-pressed", String(on));
     Object.values(orbitMeshes).forEach(m => (m.visible = on));
     react(on ? "happy" : "wow", on ? "Órbitas visíveis outra vez!" : "Sem linhas de órbita… os planetas voam à solta!");
 });
@@ -968,6 +1009,7 @@ $("orbitsBtn").addEventListener("click", e => {
 $("labelsBtn").addEventListener("click", e => {
     touch();
     const on = e.currentTarget.classList.toggle("active");
+    e.currentTarget.setAttribute("aria-pressed", String(on));
     labelsBox.classList.toggle("off", !on);
     react("idle", on ? "Nomes ligados." : "Nomes desligados. Vês se os reconheces?");
 });
@@ -978,7 +1020,21 @@ $("labelsBtn").addEventListener("click", e => {
 ===================================================== */
 
 const musicBtn = $("musicBtn");
-const tracks = (MUSIC.tracks || []).filter(Boolean);
+const musicPlayer = $("musicPlayer");
+const volumeInput = $("musicVolume");
+const volumeValue = $("musicVolumeValue");
+const trackName = $("trackName");
+const configuredTracks = Array.isArray(MUSIC.tracks) ? MUSIC.tracks : [];
+const tracks = configuredTracks.map((track, index) => {
+    if (typeof track === "string") {
+        const filename = track.split(/[\\/]/).pop() || `Faixa ${index + 1}`;
+        return { src: track.trim(), title: filename.replace(/\.[^.]+$/, "") };
+    }
+    if (track && typeof track.src === "string" && track.src.trim()) {
+        return { src: track.src.trim(), title: typeof track.title === "string" && track.title.trim() ? track.title.trim() : `Faixa ${index + 1}` };
+    }
+    return null;
+}).filter(Boolean);
 const musicAvailable = MUSIC.enabled && tracks.length > 0;
 
 const audio = new Audio();
@@ -988,38 +1044,71 @@ let userPausedMusic = false;
 
 if (musicAvailable) {
 
-    audio.volume = Math.min(1, Math.max(0, MUSIC.volume ?? .35));
+    audio.volume = Math.min(1, Math.max(0, Number(MUSIC.volume) || 0));
     audio.preload = "auto";
     audio.loop = tracks.length === 1 && MUSIC.loop;
-    audio.src = tracks[0];
+    audio.src = tracks[trackIndex].src;
 
-    musicBtn.hidden = false;
+    musicPlayer.hidden = false;
+    volumeInput.value = String(Math.round(audio.volume * 100));
+    volumeValue.value = `${volumeInput.value}%`;
+    volumeValue.textContent = volumeValue.value;
+    trackName.textContent = tracks[trackIndex].title;
+    $("trackPrev").hidden = tracks.length < 2;
+    $("trackNext").hidden = tracks.length < 2;
 
     audio.addEventListener("ended", () => {
-        trackIndex = (trackIndex + 1) % tracks.length;
-        if (trackIndex === 0 && !MUSIC.loop) { setMusicState(false); return; }
-        audio.src = tracks[trackIndex];
-        audio.play().catch(() => {});
+        if (trackIndex + 1 >= tracks.length && !MUSIC.loop) {
+            setMusicState(false);
+            return;
+        }
+        changeTrack((trackIndex + 1) % tracks.length, true);
     });
 
     audio.addEventListener("error", () => {
         console.warn("PITRUX: não consegui abrir a música:", tracks[trackIndex]);
+        trackName.textContent = "ERRO AO CARREGAR";
+        setMusicState(false);
     });
 }
 
 function setMusicState(on) {
     musicOn = on;
     musicBtn.classList.toggle("active", on);
-    musicBtn.textContent = on ? "♪ MÚSICA ON" : "♪ MÚSICA OFF";
+    musicBtn.textContent = on ? "Ⅱ" : "▶";
+    musicBtn.setAttribute("aria-pressed", String(on));
+    musicBtn.setAttribute("aria-label", on ? "Pausar música" : "Reproduzir música");
     refreshBaseMood();
 }
 
 async function playMusic() {
-    try { await audio.play(); setMusicState(true); return true; }
-    catch { setMusicState(false); return false; }
+    if (!musicAvailable) return false;
+    try {
+        await audio.play();
+        setMusicState(true);
+        return true;
+    } catch (error) {
+        setMusicState(false);
+        if (error.name === "NotAllowedError") {
+            console.info("PITRUX: o navegador exige uma interação para iniciar a música.");
+        } else {
+            console.warn("PITRUX: não consegui iniciar a música:", error);
+        }
+        return false;
+    }
 }
 
 function pauseMusic() { audio.pause(); setMusicState(false); }
+
+function changeTrack(index, autoplay = musicOn) {
+    if (!musicAvailable) return;
+    trackIndex = index;
+    audio.pause();
+    audio.src = tracks[trackIndex].src;
+    audio.loop = tracks.length === 1 && MUSIC.loop;
+    trackName.textContent = tracks[trackIndex].title;
+    if (autoplay) playMusic();
+}
 
 if (musicAvailable) {
 
@@ -1033,6 +1122,31 @@ if (musicAvailable) {
             userPausedMusic = false;
             if (await playMusic()) react("dance", "Música! Vamos dançar pelo espaço! 🎵", { force: true });
         }
+    });
+
+    $("trackPrev").addEventListener("click", () => {
+        touch();
+        const nextIndex = trackIndex === 0 ? tracks.length - 1 : trackIndex - 1;
+        changeTrack(nextIndex);
+        react("dance", `A tocar: ${tracks[nextIndex].title}.`, { force: true, ms: 2400 });
+    });
+
+    $("trackNext").addEventListener("click", () => {
+        touch();
+        const nextIndex = (trackIndex + 1) % tracks.length;
+        changeTrack(nextIndex);
+        react("dance", `A tocar: ${tracks[nextIndex].title}.`, { force: true, ms: 2400 });
+    });
+
+    volumeInput.addEventListener("input", () => {
+        audio.volume = Number(volumeInput.value) / 100;
+        volumeValue.value = `${volumeInput.value}%`;
+        volumeValue.textContent = volumeValue.value;
+        touch();
+    });
+
+    volumeInput.addEventListener("change", () => {
+        react("idle", `Volume ajustado para ${volumeInput.value}%.`, { force: true, ms: 2200 });
     });
 
     /* Os navegadores só deixam tocar depois de uma interação */
@@ -1073,8 +1187,9 @@ let farFlag = false;
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
-if (!AVATAR.enabled) astro.style.display = "none";
+if (!AVATAR.enabled) astro.hidden = true;
 $("astroName").textContent = AVATAR.name || "NOVA";
+astroFigure.setAttribute("aria-label", `Interagir com ${AVATAR.name || "NOVA"}`);
 
 function baseMood() {
     if (asleep) return "sleepy";
@@ -1168,7 +1283,10 @@ addEventListener("pointermove", e => {
 });
 
 /* Arrastar e aproximar a câmara */
-controls.addEventListener("start", () => touch());
+controls.addEventListener("start", () => {
+    touch();
+    react("wave", "Estou a acompanhar as tuas manobras!", { ms: 2200 });
+});
 
 controls.addEventListener("change", () => {
     const dist = camera.position.distanceTo(controls.target);
