@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#02040b">
+    <meta name="theme-color" content="#050817">
+    <meta name="description" content="Explora o Sistema Solar em 3D com o PITRUX. Descobre planetas, luas e curiosidades numa missão espacial interativa.">
 
     <title>PITRUX — Explorador Espacial</title>
 
@@ -27,7 +28,7 @@
 <body>
 
     <!-- ============ TELA DE CARREGAMENTO ============ -->
-    <div id="loading">
+    <div id="loading" role="status" aria-live="polite">
         <div class="loader">
             <div class="loader-orbit"><div class="loader-dot"></div></div>
             <h1>PITRUX</h1>
@@ -39,7 +40,7 @@
     <main id="app">
 
         <!-- SISTEMA SOLAR 3D -->
-        <div id="space"></div>
+        <div id="space" role="img" aria-label="Visualização 3D interativa do Sistema Solar"></div>
 
         <!-- Rótulos flutuantes dos astros -->
         <div id="labels"></div>
@@ -53,35 +54,41 @@
         <header class="topbar">
 
             <div class="brand hud">
-                <div class="brand-logo">PX</div>
+                <div class="brand-logo" aria-hidden="true">PX</div>
                 <div class="brand-text">
                     <h1>PITRUX</h1>
                     <span>EXPLORAÇÃO ESPACIAL</span>
                 </div>
             </div>
 
+            <div class="system-status" aria-label="Sistema online, simulação em 3D">
+                <span class="status-led" aria-hidden="true"></span>
+                <span>SISTEMA ONLINE</span>
+                <b>SIMULAÇÃO 3D</b>
+            </div>
+
             <div class="top-buttons">
-                <button id="overviewBtn">VISÃO GERAL</button>
-                <button id="exploreBtn" class="active">EXPLORAR</button>
+                <button id="overviewBtn" type="button">VISÃO GERAL</button>
+                <button id="exploreBtn" type="button" class="active">EXPLORAR</button>
             </div>
 
         </header>
 
 
         <!-- ============ LISTA DE PLANETAS ============ -->
-        <aside class="planet-menu hud">
+        <aside class="planet-menu hud" aria-label="Navegação do Sistema Solar">
             <div class="menu-title">SISTEMA SOLAR</div>
             <div id="planetList"></div>
         </aside>
 
 
         <!-- ============ PAINEL DE INFORMAÇÕES ============ -->
-        <aside class="info-panel hud">
+        <aside class="info-panel hud" aria-label="Informação do astro selecionado">
 
             <div class="info-top">
                 <div>
                     <span class="small-title">ASTRO SELECIONADO</span>
-                    <h2 id="planetName">Terra</h2>
+                    <h2 id="planetName" aria-live="polite">Terra</h2>
                     <p id="planetType">Planeta rochoso</p>
                 </div>
                 <button id="closeInfo" class="close-button" aria-label="Fechar">×</button>
@@ -98,7 +105,7 @@
                 <p id="curiosity"></p>
             </div>
 
-            <button id="focusBtn" class="main-button">EXPLORAR ESTE ASTRO</button>
+            <button id="focusBtn" type="button" class="main-button">EXPLORAR ESTE ASTRO</button>
 
         </aside>
 
@@ -144,23 +151,36 @@
 
 
         <!-- ============ CONTROLOS ============ -->
-        <div class="controls hud">
+        <div class="controls hud" role="group" aria-label="Controlos da simulação">
 
-            <button id="pauseBtn">Ⅱ PAUSAR</button>
+            <button id="pauseBtn" type="button" aria-pressed="false">Ⅱ PAUSAR</button>
 
             <label>
                 VELOCIDADE
-                <input id="speed" type="range" min="0" max="3" step="0.1" value="1">
+                <input id="speed" type="range" min="0" max="3" step="0.1" value="1" aria-label="Velocidade da simulação">
                 <em id="speedValue">1.0×</em>
             </label>
 
-            <button id="orbitsBtn" class="toggle active" title="Mostrar/ocultar órbitas">ÓRBITAS</button>
-            <button id="labelsBtn" class="toggle active" title="Mostrar/ocultar nomes">NOMES</button>
+            <button id="orbitsBtn" type="button" class="toggle active" aria-pressed="true" title="Mostrar/ocultar órbitas">ÓRBITAS</button>
+            <button id="labelsBtn" type="button" class="toggle active" aria-pressed="true" title="Mostrar/ocultar nomes">NOMES</button>
 
-            <!-- Só aparece se existir música definida no config.js -->
-            <button id="musicBtn" class="toggle" hidden>♪ MÚSICA</button>
+            <!-- Playlist privada configurada em config.js; sem seleção ou carregamento de ficheiros no site. -->
+            <section id="musicPlayer" class="music-player" aria-label="Leitor de música" hidden>
+                <button id="trackPrev" type="button" class="track-skip" aria-label="Faixa anterior" title="Faixa anterior">‹|</button>
+                <button id="musicBtn" type="button" class="music-play" aria-pressed="false" aria-label="Reproduzir música">▶</button>
+                <div class="music-meta">
+                    <span>TRANSMISSÃO SONORA</span>
+                    <strong id="trackName">—</strong>
+                </div>
+                <button id="trackNext" type="button" class="track-skip" aria-label="Faixa seguinte" title="Faixa seguinte">|›</button>
+                <label class="volume-control" for="musicVolume">
+                    <span aria-hidden="true">VOL</span>
+                    <input id="musicVolume" type="range" min="0" max="100" step="1" value="35" aria-label="Volume da música">
+                    <output id="musicVolumeValue" for="musicVolume">35%</output>
+                </label>
+            </section>
 
-            <button id="resetBtn">⌂ SISTEMA</button>
+            <button id="resetBtn" type="button">⌂ SISTEMA</button>
 
         </div>
 
@@ -174,13 +194,13 @@
         <!-- ============ ASTRONAUTA ============ -->
         <div id="astro" class="astro-wrap" data-mood="idle">
 
-            <div id="astroBubble" class="astro-bubble">
+            <div id="astroBubble" class="astro-bubble" role="status" aria-live="polite">
                 <b id="astroName">NOVA</b>
                 <span id="astroText"></span>
             </div>
 
-            <div id="astroFigure" class="astro-figure" title="Faz-me festas!">
-                <svg class="astro-svg" viewBox="0 0 140 175" xmlns="http://www.w3.org/2000/svg">
+            <button id="astroFigure" type="button" class="astro-figure" aria-label="Interagir com a astronauta NOVA" title="Clica para interagir">
+                <svg class="astro-svg" viewBox="0 0 140 175" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <defs>
                         <linearGradient id="gSuit" x1="0" y1="0" x2="1" y2="1">
                             <stop offset="0" stop-color="#ffffff"/>
@@ -302,7 +322,7 @@
 
                     </g>
                 </svg>
-            </div>
+            </button>
 
         </div>
 
