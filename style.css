@@ -1259,7 +1259,8 @@ body.lab-open .planet-menu,
 body.lab-open .info-panel,
 body.lab-open .controls,
 body.lab-open .help,
-body.lab-open .topbar { visibility: hidden; }
+body.lab-open .topbar,
+body.lab-open .astro-wrap { visibility: hidden; }
 
 @media (max-width: 800px) {
     .lab-overlay { padding: 8px; }
@@ -1491,4 +1492,21 @@ body.lab-open .topbar { visibility: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
     .astro-wrap.dragging .astro-figure { transform: none; }
+}
+
+
+/* ----- Laboratório / Sobre: cabeçalho e separadores nunca encolhem; só o conteúdo faz scroll ----- */
+
+.lab-card, .about-card { overflow: hidden; min-height: 0; }
+.lab-header, .lab-tabs, .about-header { flex: none; }
+.lab-header .close-button, .about-header .close-button, .lab-header button, .about-header button { flex: none; }
+.lab-tabs { min-height: max-content; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.lab-tabs::-webkit-scrollbar { display: none; }
+.lab-panel { flex: 1 1 auto; min-height: 0; }
+.about-body { flex: 1 1 auto; min-height: 0; }
+
+@media (max-width: 900px), (max-height: 520px) {
+    .lab-card, .about-card { padding-top: 14px; }
+    .lab-header h2, .about-header h2 { margin-top: 4px; }
+    .lab-header .close-button, .about-header .close-button { min-width: 40px; min-height: 40px; }
 }
