@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#050817">
     <meta name="description" content="Explora o Sistema Solar em 3D com o PITRUX. Descobre planetas, luas e curiosidades numa missão espacial interativa.">
 
@@ -84,32 +84,75 @@
         </aside>
 
 
-        <!-- ============ PAINEL DE INFORMAÇÕES ============ -->
-        <aside class="info-panel hud" aria-label="Informação do astro selecionado">
+        <!-- ============ PAINEL + CONTROLOS ============
+             Em ecrãs grandes cada um fica no seu canto; em ecrãs pequenos empilham-se em baixo. -->
+        <div class="dock">
 
-            <div class="info-top">
-                <div>
-                    <span class="small-title">ASTRO SELECIONADO</span>
-                    <h2 id="planetName" aria-live="polite">Terra</h2>
-                    <p id="planetType">Planeta rochoso</p>
+            <!-- ============ PAINEL DE INFORMAÇÕES ============ -->
+            <aside class="info-panel hud" aria-label="Informação do astro selecionado">
+
+                <div class="info-top">
+                    <div>
+                        <span class="small-title">ASTRO SELECIONADO</span>
+                        <h2 id="planetName" aria-live="polite">Terra</h2>
+                        <p id="planetType">Planeta rochoso</p>
+                    </div>
+                    <div class="info-actions">
+                        <button id="infoToggle" type="button" class="close-button info-toggle" aria-expanded="true" aria-label="Recolher painel">⌄</button>
+                        <button id="closeInfo" class="close-button" aria-label="Fechar">×</button>
+                    </div>
                 </div>
-                <button id="closeInfo" class="close-button" aria-label="Fechar">×</button>
+
+                <div id="planetTag" class="planet-tag">TERR-03</div>
+
+                <p id="planetDescription" class="description"></p>
+
+                <div id="facts" class="facts"></div>
+
+                <div class="curiosity">
+                    <span>✦ CURIOSIDADE</span>
+                    <p id="curiosity"></p>
+                </div>
+
+                <button id="focusBtn" type="button" class="main-button">EXPLORAR ESTE ASTRO</button>
+
+            </aside>
+
+            <!-- ============ CONTROLOS ============ -->
+            <div class="controls hud" role="group" aria-label="Controlos da simulação">
+
+                <button id="pauseBtn" type="button" aria-pressed="false">Ⅱ PAUSAR</button>
+
+                <label>
+                    VELOCIDADE
+                    <input id="speed" type="range" min="0" max="3" step="0.1" value="1" aria-label="Velocidade da simulação">
+                    <em id="speedValue">1.0×</em>
+                </label>
+
+                <button id="orbitsBtn" type="button" class="toggle active" aria-pressed="true" title="Mostrar/ocultar órbitas">ÓRBITAS</button>
+                <button id="labelsBtn" type="button" class="toggle active" aria-pressed="true" title="Mostrar/ocultar nomes">NOMES</button>
+
+                <!-- Playlist privada configurada em config.js; sem seleção ou carregamento de ficheiros no site. -->
+                <section id="musicPlayer" class="music-player" aria-label="Leitor de música" hidden>
+                    <button id="trackPrev" type="button" class="track-skip" aria-label="Faixa anterior" title="Faixa anterior">‹|</button>
+                    <button id="musicBtn" type="button" class="music-play" aria-pressed="false" aria-label="Reproduzir música">▶</button>
+                    <div class="music-meta">
+                        <span>TRANSMISSÃO SONORA</span>
+                        <strong id="trackName">—</strong>
+                    </div>
+                    <button id="trackNext" type="button" class="track-skip" aria-label="Faixa seguinte" title="Faixa seguinte">|›</button>
+                    <label class="volume-control" for="musicVolume">
+                        <span aria-hidden="true">VOL</span>
+                        <input id="musicVolume" type="range" min="0" max="100" step="1" value="35" aria-label="Volume da música">
+                        <output id="musicVolumeValue" for="musicVolume">35%</output>
+                    </label>
+                </section>
+
+                <button id="resetBtn" type="button">⌂ SISTEMA</button>
+
             </div>
 
-            <div id="planetTag" class="planet-tag">TERR-03</div>
-
-            <p id="planetDescription" class="description"></p>
-
-            <div id="facts" class="facts"></div>
-
-            <div class="curiosity">
-                <span>✦ CURIOSIDADE</span>
-                <p id="curiosity"></p>
-            </div>
-
-            <button id="focusBtn" type="button" class="main-button">EXPLORAR ESTE ASTRO</button>
-
-        </aside>
+        </div>
 
 
         <!-- ============ MODO EXPLORAÇÃO ============ -->
@@ -180,41 +223,6 @@
         </section>
 
 
-        <!-- ============ CONTROLOS ============ -->
-        <div class="controls hud" role="group" aria-label="Controlos da simulação">
-
-            <button id="pauseBtn" type="button" aria-pressed="false">Ⅱ PAUSAR</button>
-
-            <label>
-                VELOCIDADE
-                <input id="speed" type="range" min="0" max="3" step="0.1" value="1" aria-label="Velocidade da simulação">
-                <em id="speedValue">1.0×</em>
-            </label>
-
-            <button id="orbitsBtn" type="button" class="toggle active" aria-pressed="true" title="Mostrar/ocultar órbitas">ÓRBITAS</button>
-            <button id="labelsBtn" type="button" class="toggle active" aria-pressed="true" title="Mostrar/ocultar nomes">NOMES</button>
-
-            <!-- Playlist privada configurada em config.js; sem seleção ou carregamento de ficheiros no site. -->
-            <section id="musicPlayer" class="music-player" aria-label="Leitor de música" hidden>
-                <button id="trackPrev" type="button" class="track-skip" aria-label="Faixa anterior" title="Faixa anterior">‹|</button>
-                <button id="musicBtn" type="button" class="music-play" aria-pressed="false" aria-label="Reproduzir música">▶</button>
-                <div class="music-meta">
-                    <span>TRANSMISSÃO SONORA</span>
-                    <strong id="trackName">—</strong>
-                </div>
-                <button id="trackNext" type="button" class="track-skip" aria-label="Faixa seguinte" title="Faixa seguinte">|›</button>
-                <label class="volume-control" for="musicVolume">
-                    <span aria-hidden="true">VOL</span>
-                    <input id="musicVolume" type="range" min="0" max="100" step="1" value="35" aria-label="Volume da música">
-                    <output id="musicVolumeValue" for="musicVolume">35%</output>
-                </label>
-            </section>
-
-            <button id="resetBtn" type="button">⌂ SISTEMA</button>
-
-        </div>
-
-
         <!-- ============ AJUDA ============ -->
         <div class="help">
             <b>ARRASTA</b> para rodar · <b>SCROLL</b> para aproximar · <b>CLICA</b> num astro
@@ -229,7 +237,7 @@
                 <span id="astroText"></span>
             </div>
 
-            <button id="astroFigure" type="button" class="astro-figure" aria-label="Interagir com a astronauta NOVA" title="Clica para interagir">
+            <button id="astroFigure" type="button" class="astro-figure" aria-label="Interagir com a astronauta NOVA" title="Clica para interagir · arrasta para me mover · duplo clique para repor">
                 <svg class="astro-svg" viewBox="0 0 140 175" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <defs>
                         <linearGradient id="gSuit" x1="0" y1="0" x2="1" y2="1">
