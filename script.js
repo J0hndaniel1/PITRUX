@@ -7,6 +7,7 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 import { MUSIC, AVATAR, OVERVIEW } from "./config.js";
 import { initLab } from "./lab.js";
+import { initAstroDrag } from "./astro-drag.js";
 
 
 /* =====================================================
@@ -124,6 +125,7 @@ let paused = false;
 let speed = 1;
 let followName = null;
 let flight = null;
+let atHome = true;   // a câmara ainda está na posição inicial (visão geral)
 const followLast = new THREE.Vector3();
 
 
@@ -135,11 +137,25 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x01020a);
 
 const camera = new THREE.PerspectiveCamera(52, innerWidth / innerHeight, 0.1, 6000);
-const HOME_CAM = new THREE.Vector3(0, 48, 72);
+const HOME_BASE = new THREE.Vector3(0, 48, 72);
+const HOME_CAM = new THREE.Vector3();
+
+/* Em ecrãs estreitos (telemóvel em pé) a câmara da visão geral afasta-se,
+   para o Sistema Solar inteiro caber na largura. Em PC fica como estava. */
+function updateHomeCam() {
+    const halfWidth = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * Math.min(camera.aspect, 2.4);
+    const scale = Math.min(3.4, Math.max(1, (70 / halfWidth) / HOME_BASE.length()));
+    HOME_CAM.copy(HOME_BASE).multiplyScalar(scale);
+}
+
+updateHomeCam();
 camera.position.copy(HOME_CAM);
 
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
-const pixelRatio = Math.min(devicePixelRatio, 2);
+
+/* Telemóveis e tablets pequenos: menos pixéis e menos suavização, para não aquecer nem ficar lento */
+const LOW_POWER = matchMedia("(pointer: coarse)").matches && Math.min(screen.width, screen.height) <= 820;
+const pixelRatio = Math.min(devicePixelRatio, LOW_POWER ? 1.5 : 2);
 renderer.setPixelRatio(pixelRatio);
 renderer.setSize(innerWidth, innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -163,7 +179,7 @@ controls.rotateSpeed = 0.7;
 
 const renderTarget = new THREE.WebGLRenderTarget(innerWidth * pixelRatio, innerHeight * pixelRatio, {
     type: THREE.HalfFloatType,
-    samples: 4
+    samples: LOW_POWER ? 2 : 4
 });
 
 const composer = new EffectComposer(renderer, renderTarget);
@@ -846,6 +862,7 @@ function worldPos(name) {
 }
 
 function startFlight(endTarget, endCam, follow = null, duration = 1.7) {
+    atHome = false;
     flight = {
         t: 0, dur: duration, follow,
         sc: camera.position.clone(), st: controls.target.clone(),
@@ -854,12 +871,18 @@ function startFlight(endTarget, endCam, follow = null, duration = 1.7) {
     followName = null;
 }
 
+/* Em ecrãs em pé o astro focado fica mais longe, para caber (os anéis de Saturno, por exemplo) */
+function focusBoost() {
+    const aspect = innerWidth / innerHeight;
+    return aspect >= 1 ? 1 : Math.min(2, 1 / aspect);
+}
+
 function focusPlanet(name) {
     const data = planets[name];
     const dir = camera.position.clone().sub(controls.target).normalize();
     if (dir.y < .18) { dir.y = .18; dir.normalize(); }
 
-    const dist = name === "Sol" ? 24 : Math.max(data.radius * 6.5, 9) + (name === "Saturno" ? 6 : 0);
+    const dist = (name === "Sol" ? 24 : Math.max(data.radius * 6.5, 9) + (name === "Saturno" ? 6 : 0)) * focusBoost();
 
     startFlight(
         () => worldPos(name),
@@ -870,9 +893,11 @@ function focusPlanet(name) {
 
 function goHome() {
     startFlight(() => new THREE.Vector3(0, 0, 0), () => HOME_CAM.clone(), null, 1.9);
+    atHome = true;
 }
 
 controls.addEventListener("start", () => {
+    atHome = false;
     if (flight) {
         if (flight.follow) { followName = flight.follow; followLast.copy(worldPos(followName)); }
         flight = null;
@@ -1099,6 +1124,33 @@ $("closeInfo").addEventListener("click", () => {
     react("wave", "Painel fechado. Continuo aqui se precisares!", { force: true });
 });
 
+/* Painel recolhível (telemóvel e tablet em pé): só o título, ou tudo */
+const infoToggle = $("infoToggle");
+const compactLayout = matchMedia("(max-width: 900px), (max-height: 520px) and (orientation: landscape)");
+
+function setInfoCollapsed(collapsed, remember = true) {
+    infoPanel.classList.toggle("collapsed", collapsed);
+    infoToggle.setAttribute("aria-expanded", String(!collapsed));
+    infoToggle.setAttribute("aria-label", collapsed ? "Expandir painel" : "Recolher painel");
+    infoToggle.textContent = collapsed ? "⌃" : "⌄";
+    if (remember) { try { localStorage.setItem("pitrux.infoCollapsed", collapsed ? "1" : "0"); } catch { /* sem armazenamento */ } }
+}
+
+{
+    let stored = null;
+    try { stored = localStorage.getItem("pitrux.infoCollapsed"); } catch { /* sem armazenamento */ }
+    setInfoCollapsed(stored === null ? innerWidth <= 600 || innerHeight <= 520 : stored === "1", false);
+}
+
+infoToggle.addEventListener("click", () => { touch(); setInfoCollapsed(!infoPanel.classList.contains("collapsed")); });
+
+/* Tocar no título também recolhe/expande (mais fácil com o polegar) */
+infoPanel.querySelector(".info-top > div").addEventListener("click", () => {
+    if (!compactLayout.matches) return;
+    touch();
+    setInfoCollapsed(!infoPanel.classList.contains("collapsed"));
+});
+
 /* pausar */
 function togglePause() {
     touch();
@@ -1318,7 +1370,7 @@ const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
 if (!AVATAR.enabled) astro.hidden = true;
 $("astroName").textContent = AVATAR.name || "NOVA";
-astroFigure.setAttribute("aria-label", `Interagir com ${AVATAR.name || "NOVA"}`);
+astroFigure.setAttribute("aria-label", `Interagir com ${AVATAR.name || "NOVA"}. Arrasta, ou usa as setas do teclado, para a mover.`);
 
 function baseMood() {
     if (asleep) return "sleepy";
@@ -1395,6 +1447,20 @@ astroFigure.addEventListener("click", () => {
     const [mood, line] = pick(pokeLines);
     react(mood, line, { force: true });
 });
+
+/* Arrastar a NOVA para onde ela não tape o que estás a ler */
+const dragLines = ["Uiii, estou a voar!", "Pode ser aqui? Daqui vejo bem.", "Mudança de poiso! Boa escolha."];
+const dropLines = ["Boa! Daqui já não tapo nada.", "Fico aqui então. Chama-me se precisares!", "Perfeito, vista desimpedida!"];
+
+if (AVATAR.enabled) {
+    initAstroDrag({
+        wrap: astro,
+        figure: astroFigure,
+        onDragStart() { touch(); react("wow", pick(dragLines), { ms: 1800 }); },
+        onDrop() { react("happy", pick(dropLines), { force: true, ms: 2600 }); },
+        onReset() { touch(); react("wave", "De volta ao meu cantinho!", { force: true, ms: 2600 }); }
+    });
+}
 
 /* Os olhos seguem o rato */
 addEventListener("pointermove", e => {
@@ -1512,6 +1578,43 @@ renderer.domElement.addEventListener("pointermove", e => {
 
 
 /* =====================================================
+   VISTA: ZONA LIVRE DO ECRÃ
+   Em telemóvel em pé / tablet vertical o painel e os controlos ficam
+   empilhados em baixo. Em vez de o astro ficar escondido por detrás
+   deles, a vista desloca-se para o centro da zona que sobra.
+===================================================== */
+
+const dock = document.querySelector(".dock");
+const planetMenu = document.querySelector(".planet-menu");
+let viewShift = 0;
+let viewShiftTarget = 0;
+
+function measureViewShift() {
+    const stacked = dock && getComputedStyle(dock).display !== "contents" && dock.getBoundingClientRect().width > innerWidth * .8;
+    if (!stacked) { viewShiftTarget = 0; return; }
+
+    const freeTop = planetMenu.getBoundingClientRect().bottom + 6;
+    const freeBottom = dock.getBoundingClientRect().top - 6;
+    const shift = innerHeight / 2 - (freeTop + freeBottom) / 2;
+    viewShiftTarget = Math.max(0, Math.min(innerHeight * .32, shift));
+}
+
+function applyViewShift() {
+    if (viewShift < .5) {
+        if (camera.view?.enabled) camera.clearViewOffset();
+    } else {
+        camera.setViewOffset(innerWidth, innerHeight, 0, viewShift, innerWidth, innerHeight);
+    }
+}
+
+if (dock && typeof ResizeObserver === "function") {
+    const observer = new ResizeObserver(measureViewShift);
+    observer.observe(dock);
+    observer.observe(planetMenu);
+}
+
+
+/* =====================================================
    ANIMAÇÃO
 ===================================================== */
 
@@ -1571,6 +1674,11 @@ function animate() {
     sunGlowA.scale.setScalar(26 * pulse);
     sunGlowB.scale.setScalar(60 * (2 - pulse));
 
+    if (Math.abs(viewShiftTarget - viewShift) > .2) {
+        viewShift += (viewShiftTarget - viewShift) * .18;
+        applyViewShift();
+    }
+
     updateCamera(delta);
     controls.update();
 
@@ -1595,6 +1703,9 @@ function animate() {
 buildPlanetList();
 selectPlanet("Terra", false, false);
 setMusicState(false);
+measureViewShift();
+viewShift = viewShiftTarget;
+applyViewShift();
 animate();
 
 requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -1604,6 +1715,16 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
         setTimeout(() => {
             react("wave", `Olá, explorador! Eu sou ${AVATAR.name || "NOVA"}, o teu astronauta guia. Clica num astro!`, { force: true, ms: 6500 });
         }, 700);
+
+        /* Só da primeira vez: avisa que a NOVA se pode mover */
+        let seenHint = true;
+        try { seenHint = localStorage.getItem("pitrux.astroHint") === "1"; } catch { /* sem armazenamento */ }
+        if (AVATAR.enabled && !seenHint) {
+            setTimeout(() => {
+                react("wave", "Dica: arrasta-me para onde preferires, assim não te tapo nada!", { force: true, ms: 6500 });
+                try { localStorage.setItem("pitrux.astroHint", "1"); } catch { /* sem armazenamento */ }
+            }, 7600);
+        }
     }, 500);
 }));
 
@@ -1613,10 +1734,20 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
 ===================================================== */
 
 addEventListener("resize", () => {
+    if (camera.view?.enabled) camera.clearViewOffset();
+
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
     composer.setSize(innerWidth, innerHeight);
+
+    /* a visão geral reajusta-se ao novo formato (ex.: telemóvel a rodar) */
+    updateHomeCam();
+    if (atHome && !flight) camera.position.copy(HOME_CAM);
+
+    measureViewShift();
+    viewShift = viewShiftTarget;
+    applyViewShift();
 });
 
 addEventListener("error", e => console.error("Erro no PITRUX:", e.error));
